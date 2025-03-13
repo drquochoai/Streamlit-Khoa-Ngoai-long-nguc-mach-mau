@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
+import io
 
 st.title("Trang chủ")
 
@@ -50,6 +51,29 @@ if uploaded_file is not None:
     df['NGAY'] = df['NGAY'].apply(convert_date)
     df['NGAYKT'] = df['NGAYKT'].apply(convert_date)
 
+    # Create button to download  pandas dataframe as excel file
+    def to_excel(df):
+        output = io.BytesIO()
+        writer = pd.ExcelWriter(output, engine='xlsxwriter')
+        df.to_excel(writer, index=False, sheet_name='Sheet1')
+        # filter first row
+        
+        writer.close()
+        processed_data = output.getvalue()
+        return processed_data
+
+    excel_data = to_excel(df)
+    # Set filename as the name of file from uploaded file and add modified
+    # filename = 
+    filename = f"modified_{uploaded_file.name}"
+    st.download_button(
+        label= f"🔽Download: {filename} 🔽🔽",
+        data=excel_data,
+        file_name= filename,
+        mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    # ok
+    
     # Show the data
     st.write(df)
     # show plot of the data follow NGAY, count total rows have same day
