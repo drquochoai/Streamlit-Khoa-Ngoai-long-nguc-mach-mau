@@ -34,8 +34,8 @@ if uploaded_file is not None:
         try:
             # Try to parse as datetime object
             date_obj = pd.to_datetime(date_str, format='%d/%m/%Y %H:%M', errors='coerce')
-            print(date_str, date_obj)
-            print(date_str, date_obj)
+            # print(date_str, date_obj)
+            # print(date_str, date_obj)
             if pd.notnull(date_obj):
                 return date_obj
             else:
